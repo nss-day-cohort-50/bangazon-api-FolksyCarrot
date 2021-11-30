@@ -7,7 +7,7 @@ class Product(models.Model):
     store = models.ForeignKey(
         "Store", on_delete=models.CASCADE, related_name='products')
     price = models.FloatField(validators=[
-        MinValueValidator(0.00), MaxValueValidator(17000.00)])
+        MinValueValidator(0.00), MaxValueValidator(17500.00)])
     description = models.TextField()
     quantity = models.IntegerField()
     location = models.CharField(max_length=100)
@@ -29,12 +29,17 @@ class Product(models.Model):
         # TODO: Fix Divide by zero error
         # The below code returns a divide by zero error uncomment and fix
 
-        # total_rating = 0
-        # for rating in self.ratings.all():
-        #     total_rating += rating.rating
+        total_rating = 0
+        try:
+            for rating in self.ratings.all():
+             
+                total_rating += rating.rating
 
-        # avg = total_rating / self.ratings.count()
-        # return avg
+            avg = total_rating / self.ratings.count()
+                
+        except:
+            avg = "no rating"
+        return avg
 
     def __str__(self):
         return self.name
